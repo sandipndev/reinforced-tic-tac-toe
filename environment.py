@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image
+import hashlib
 
 class TicTacToeEnv():
     """This is the environment on which the Tic Tac Toe game will run
@@ -40,14 +41,14 @@ class TicTacToeEnv():
     
         # Check if the given position is empty
         if self.mat[action[0], action[1]] != 0:
-            return (self.mat, 0, None)
+            return (self.mat, -2, False)
         
         # Update
         self.mat[action[0], action[1]] = 1
 
         # Check if User won
         if self._check_win(1):
-            return (self.mat, 1, True)
+            return (self.mat, 10, True)
 
         # Check for game end
         acts = self.action_space
@@ -60,11 +61,15 @@ class TicTacToeEnv():
 
         # Check if User lost
         if self._check_win(2):
-            return (self.mat, -0.5, True)
+            return (self.mat, -10, True)
         
         # If nothing wrong happens
         else:
-            return (self.mat, 0, False)
+            return (self.mat, -1, False)
+
+    @property
+    def state_hash(self):
+        return hashlib.md5(str(self.mat).encode()).hexdigest()
 
     @staticmethod
     def box_coordinates(position):
@@ -132,4 +137,3 @@ class TicTacToeEnv():
             board_pic.paste(red_line, (0, 0, 600, 600), red_line)
         
         return np.array(board_pic)
-
