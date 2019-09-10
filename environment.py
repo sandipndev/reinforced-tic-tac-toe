@@ -41,14 +41,14 @@ class TicTacToeEnv():
     
         # Check if the given position is empty
         if self.mat[action[0], action[1]] != 0:
-            return (self.mat, -2, False)
+            return (self.mat, -0.9, False)
         
         # Update
         self.mat[action[0], action[1]] = 1
 
         # Check if User won
         if self._check_win(1):
-            return (self.mat, 10, True)
+            return (self.mat, 1.0, True)
 
         # Check for game end
         acts = self.action_space
@@ -61,11 +61,11 @@ class TicTacToeEnv():
 
         # Check if User lost
         if self._check_win(2):
-            return (self.mat, -10, True)
+            return (self.mat, -1.0, True)
         
         # If nothing wrong happens
         else:
-            return (self.mat, -1, False)
+            return (self.mat, -0.1, False)
 
     @property
     def state_hash(self):
